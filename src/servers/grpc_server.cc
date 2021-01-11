@@ -3912,7 +3912,7 @@ GRPCServer::Create(
     bool use_ssl, const SslOptions& ssl_options, int infer_allocation_pool_size,
     std::unique_ptr<GRPCServer>* grpc_server)
 {
-  const std::string addr = "0.0.0.0:" + std::to_string(port);
+  const std::string addr = "127.0.0.1:" + std::to_string(port);
   grpc_server->reset(new GRPCServer(
       server, trace_manager, shm_manager, addr, use_ssl, ssl_options,
       infer_allocation_pool_size));
