@@ -248,15 +248,15 @@ function run_server_nowait () {
             argumentlist="-ArgumentList \"$SERVER_ARGS\""
         fi
 
-        powershell_command="\$process = Start-Process -NoNewWindow -PassThru \"$SERVER\" $argumentlist
-                            if (\$process) {
-                              \$pidfile = \"$SERVER_PIDDIR_WP\" + \"/proc.\" + \$process.id
-                              echo \$null >> \$pidfile
-                              Wait-Process \$process.id
-                              exit \$process.ExitCode
-                            } else {
-                              \$pidfile = \"$SERVER_PIDDIR_WP\" + \"/proc.0\"
-                              echo \$null >> \$pidfile
+        powershell_command="\$process = Start-Process -NoNewWindow -PassThru \"$SERVER\" $argumentlist; \
+                            if (\$process) { \
+                              \$pidfile = \"$SERVER_PIDDIR_WP\" + \"/proc.\" + \$process.id; \
+                              echo \$null >> \$pidfile; \
+                              Wait-Process \$process.id; \
+                              exit \$process.ExitCode; \
+                            } else { \
+                              \$pidfile = \"$SERVER_PIDDIR_WP\" + \"/proc.0\"; \
+                              echo \$null >> \$pidfile; \
                             }"
 
         powershell.exe -Command "$powershell_command" > $SERVER_LOG 2>&1 &
@@ -264,22 +264,32 @@ function run_server_nowait () {
 
         echo "=== Waiting for windows pid..."
         wait_secs=5
-        until test $wait_secs -eq 0 -o -f $SERVER_PIDDIR/proc.* ; do sleep 1; ((wait_secs--)); done
+        until test $wait_secs -eq 0 -o -f $SERVER_PIDDIR/proc.* ; do
+            sleep 1;
+            echo "ls $SERVER_PIDDIR"
+            ls $SERVER_PIDDIR
+            ps
+            ((wait_secs--));
+        done
+
         if [ "$wait_secs" == "0" ]; then
             echo "=== Timeout. Unable to find windows pid"
+            kill $SERVER_PID || true
+            SERVER_PID=0
+            SERVER_WIN_PID=0
             return
         fi
 
         pidfiles=($SERVER_PIDDIR/proc.*)
         rm -f $SERVER_PIDDIR/proc.*
-        echo "${#pidfiles[@]}"
-        echo "${pidfiles[@]}"
         pidbase=`basename ${pidfiles[0]}`
         SERVER_WIN_PID=${pidbase#proc.}
         if [[ $SERVER_WIN_PID == 0 ]]; then
             echo "=== Failed launching windows server."
+            kill $SERVER_PID || true
             SERVER_PID=0
             SERVER_WIN_PID=0
+            return
         fi
     else
         # Non-windows...
@@ -356,7 +366,7 @@ function kill_server () {
         # Restore -x
         eval "$ts"
     fi
-    
+
     kill $SERVER_PID || true
     wait $SERVER_PID || true
 }
