@@ -259,7 +259,7 @@ function run_server_nowait () {
                               echo \$null >> \$pidfile; \
                             }"
 
-        powershell.exe -Command "$powershell_command" > $SERVER_LOG 2>&1 &
+        powershell.exe -Command "$powershell_command" > $SERVER_LOG 2>&1
         SERVER_PID=$!
 
         echo "=== Waiting for windows pid..."
