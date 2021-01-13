@@ -26,6 +26,7 @@
 
 cmake_minimum_required (VERSION 3.18)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_subdirectory(tritonclient)
 
 # Needed for the backwards-compatibility
@@ -48,14 +49,14 @@ configure_file(LICENSE.txt LICENSE.txt COPYONLY)
 configure_file(setup.py setup.py COPYONLY)
 file(COPY requirements DESTINATION .)
 
-set(WHEEL_DEPENDS 
+set(WHEEL_DEPENDS
       ${CMAKE_CURRENT_BINARY_DIR}/VERSION
       ${CMAKE_CURRENT_BINARY_DIR}/LICENSE.txt
       ${CMAKE_CURRENT_BINARY_DIR}/setup.py
 )
 
 if(${TRITON_ENABLE_GRPC})
-  set(WHEEL_DEPENDS 
+  set(WHEEL_DEPENDS
         ${CMAKE_CURRENT_BINARY_DIR}/tritonclient/grpc
         proto-py-library
         grpc-py-library
@@ -64,7 +65,7 @@ if(${TRITON_ENABLE_GRPC})
 endif() # TRITON_ENABLE_GRPC
 
 if(${TRITON_ENABLE_HTTP})
-  set(WHEEL_DEPENDS 
+  set(WHEEL_DEPENDS
         ${CMAKE_CURRENT_BINARY_DIR}/tritonclient/http
         ${WHEEL_DEPENDS}
   )

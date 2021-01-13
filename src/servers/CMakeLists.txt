@@ -28,6 +28,7 @@ cmake_minimum_required (VERSION 3.18)
 
 find_library(RE2_LIBRARY NAMES re2)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 #
 # grpc endpoint
 #

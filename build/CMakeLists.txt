@@ -27,6 +27,7 @@
 cmake_minimum_required (VERSION 3.18)
 project (triton-inference-server)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include(CMakeDependentOption)
 include(ExternalProject)
 include(GNUInstallDirs)
@@ -369,7 +370,7 @@ ExternalProject_Add(google-cloud-cpp
 )
 
 #
-# Build azure-storage-cpplite 
+# Build azure-storage-cpplite
 #
 ExternalProject_Add(azure-storage-cpplite
   PREFIX azure-storage-cpplite

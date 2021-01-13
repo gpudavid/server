@@ -26,6 +26,7 @@
 
 cmake_minimum_required (VERSION 3.18)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_subdirectory(library)
 if(NOT ${TRITON_CLIENT_SKIP_EXAMPLES})
   add_subdirectory(examples)

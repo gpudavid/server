@@ -26,6 +26,7 @@
 
 cmake_minimum_required (VERSION 3.18)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 FetchContent_Declare(tensorflow-serving-repo
   PREFIX tensorflow-serving-rep
 )
@@ -116,8 +117,8 @@ set(
   tensorflow_serving/tfserve_client_backend.h
   tensorflow_serving/tfserve_infer_input.h
   tensorflow_serving/grpc_client.h
-  ${PB_HEADERS} 
-  ${PB_GRPC_HEADERS} 
+  ${PB_HEADERS}
+  ${PB_GRPC_HEADERS}
   torchserve/torchserve_client_backend.h
   torchserve/torchserve_infer_input.h
   torchserve/http_client.h
@@ -146,4 +147,3 @@ if(${TRITON_ENABLE_GPU})
     target_include_directories(client-backend-library PUBLIC ${CUDA_INCLUDE_DIRS})
     target_link_libraries(client-backend-library PRIVATE ${CUDA_LIBRARIES})
 endif() # TRITON_ENABLE_GPU
-

@@ -26,6 +26,7 @@
 
 cmake_minimum_required (VERSION 3.18)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 if(WIN32)
   message("Currently, CMake will not build perf_analyzer because it uses functionalities that "
 		      "are UNIX specific.")
